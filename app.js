@@ -1,61 +1,82 @@
+const chartStart = -300;
+const chartEnd = 589;
+const chartBodyTop = 48;
+
 const moments = [
-  { year: -300, china: ['战国时代', '七国相互竞争，思想家们也在探讨怎样建立更好的社会。', '战国'], rome: ['罗马共和国', '罗马的势力正在意大利半岛不断扩大。', '共和国'], india: ['孔雀王朝兴起', '旃陀罗笈多建立了一个强大的新帝国。', '孔雀王朝'], greece: ['希腊化世界', '亚历山大昔日的将领统治着多个说希腊语的王国。', '希腊化'] },
-  { year: -221, china: ['秦统一中国', '秦始皇成为统一中国后的第一位皇帝。', '秦朝'], rome: ['罗马共和国', '罗马正与迦太基争夺地中海的控制权。', '共和国'], india: ['孔雀王朝', '阿育王的和平思想沿着繁忙的道路传播。', '孔雀王朝'], greece: ['希腊化诸国', '希腊语言与思想把埃及和西亚连接起来。', '希腊化'] },
-  { year: -202, china: ['汉朝建立', '刘邦建立了一个延续四百多年的王朝。', '汉朝'], rome: ['罗马击败迦太基', '罗马成为西地中海最强大的国家。', '共和国'], india: ['孔雀王朝之后', '孔雀王朝衰落，各地的王国逐渐发展。', '诸国'], greece: ['希腊化诸国', '亚历山大港成为科学与学术中心。', '希腊化'] },
-  { year: -138, china: ['丝绸之路开启', '张骞出使西域，带回了遥远国度的消息。', '丝绸之路'], rome: ['罗马共和国', '罗马商人交易葡萄酒、玻璃和白银。', '共和国'], india: ['印度—希腊诸国', '希腊文化与印度文化在西北地区相遇。', '交流'], greece: ['罗马向东扩张', '许多希腊城市开始受到罗马影响。', '罗马扩张'] },
-  { year: -27, china: ['西汉', '长安是一座连接丝绸之路的巨大都城。', '西汉'], rome: ['罗马帝国建立', '奥古斯都成为罗马第一位皇帝。', '帝国'], india: ['贸易十字路口', '香料和宝石经海路运往罗马，也经陆路运往中国。', '贸易'], greece: ['希腊文化延续', '希腊艺术、语言和学问深深影响着罗马生活。', '文化'] },
-  { year: 25, china: ['东汉', '汉朝都城向东迁至洛阳。', '东汉'], rome: ['罗马和平时期', '长时间的稳定促进了城市与贸易的发展。', '和平'], india: ['贵霜时代', '一个新帝国连接起经过中亚的丝绸之路。', '贵霜'], greece: ['罗马世界中的希腊', '雅典仍是学习哲学的著名城市。', '学问'] },
-  { year: 105, china: ['造纸术改进', '蔡伦向朝廷报告了更好的造纸方法。', '造纸'], rome: ['罗马帝国', '图拉真统治时期，帝国疆域达到最大。', '鼎盛'], india: ['贵霜帝国', '贸易和佛教在印度北部蓬勃发展。', '佛教'], greece: ['知识远行', '希腊的医学和科学著作广泛流传。', '知识'] },
-  { year: 200, china: ['东汉衰落', '强大的军阀相互争夺，汉朝即将走向终结。', '汉末'], rome: ['罗马帝国', '道路和海上航线仍连接着辽阔的帝国。', '帝国'], india: ['贵霜帝国', '艺术家把印度、波斯和希腊风格融合在一起。', '融合'], greece: ['罗马行省', '罗马帝国东部说希腊语的城市依然活跃。', '城市'] }
+  { year: -300, label: '战国中期' },
+  { year: -221, label: '秦统一' },
+  { year: -202, label: '汉朝建立' },
+  { year: -138, label: '张骞通西域' },
+  { year: 25, label: '东汉建立' },
+  { year: 220, label: '三国开始' },
+  { year: 280, label: '西晋短暂统一' },
+  { year: 317, label: '东晋建立' },
+  { year: 439, label: '北魏统一北方' },
+  { year: 589, label: '隋灭陈' }
 ];
 
 const civMeta = {
-  china: { label: '中国', className: 'civ-china', icon: '▥', symbol: '中' },
-  rome: { label: '罗马', className: 'civ-rome', icon: '⌂', symbol: 'R' },
-  india: { label: '印度', className: 'civ-india', icon: '◉', symbol: '印' },
-  greece: { label: '希腊', className: 'civ-greece', icon: 'Ω', symbol: '希' }
+  china: { label: '中国', className: 'civ-china', icon: '中', lanes: ['统一', '北/西', '北/东', '南方'] },
+  rome: { label: '罗马', className: 'civ-rome', icon: 'R' },
+  india: { label: '印度', className: 'civ-india', icon: '印' },
+  greece: { label: '希腊与拜占庭', className: 'civ-greece', icon: 'Ω' }
 };
 
 const periods = {
   china: [
-    { start: -300, end: -221, name: '战国', detail: '秦、齐、楚、燕、韩、赵、魏七国竞争，百家争鸣的思想也在这一时期蓬勃发展。', link: '同期：罗马共和国正在意大利扩张。' },
-    { start: -221, end: -206, name: '秦朝', detail: '秦始皇统一六国，统一文字、货币和度量衡，并建立中央集权制度。', link: '同期：印度孔雀王朝处于强盛时期。' },
-    { start: -206, end: 9, name: '西汉', detail: '汉朝巩固统一国家。张骞出使西域后，东西方交流逐渐形成丝绸之路。', link: '同期：罗马从共和国走向帝国。' },
-    { start: 9, end: 23, name: '新朝', detail: '王莽建立新朝并推行改革，但社会矛盾和起义使新朝很快结束。', link: '同期：罗马处于和平与繁荣时期。' },
-    { start: 25, end: 200, name: '东汉', detail: '都城迁至洛阳，造纸术得到改进，丝绸之路上的交流更加活跃。', link: '同期：贵霜帝国连接了中亚贸易路线。' }
+    { start: -300, end: -221, name: '战国', detail: '秦、齐、楚、燕、韩、赵、魏等诸侯国竞争，思想与制度实验也十分活跃。', link: '未统一：列国并立。' },
+    { start: -221, end: -206, name: '秦', detail: '秦始皇统一六国，建立中央集权帝国，推行文字、货币、度量衡等统一措施。', link: '统一王朝。' },
+    { start: -206, end: 9, name: '西汉', detail: '汉朝巩固统一国家，经营西域，丝绸之路逐步形成。', link: '统一王朝。' },
+    { start: 9, end: 23, name: '新', detail: '王莽建立新朝并推行改革，但社会矛盾和起义使政权迅速瓦解。', link: '短暂统一政权。' },
+    { start: 25, end: 220, name: '东汉', detail: '都城洛阳，造纸术改进，后期外戚、宦官与地方军阀力量上升。', link: '统一王朝后期逐渐失控。' },
+    { start: 220, end: 266, name: '魏', lane: 2, detail: '曹魏控制中国北方，以洛阳为中心，与蜀汉、孙吴并立。', link: '三国之一：北方。' },
+    { start: 221, end: 263, name: '蜀', lane: 1, detail: '蜀汉据有益州，以成都为中心，继承汉室名义。', link: '三国之一：西南。' },
+    { start: 229, end: 280, name: '吴', lane: 3, detail: '孙吴控制江东和长江中下游地区，建都建业。', link: '三国之一：江南。' },
+    { start: 266, end: 280, name: '晋代魏', lane: 2, detail: '司马氏取代曹魏建立晋，先控制北方与中原，随后南下灭吴。', link: '三国末期的北方政权。' },
+    { start: 280, end: 304, name: '西晋统一', detail: '280年西晋灭吴，短暂结束三国分裂局面。', link: '短暂统一阶段。' },
+    { start: 304, end: 316, name: '西晋动荡', lane: 0, span: 3, detail: '八王之乱后西晋迅速衰弱，北方新兴政权并起，统一局面瓦解。', link: '统一走向崩解。' },
+    { start: 304, end: 439, name: '十六国', lane: 1, span: 2, detail: '北方多个政权先后并立，民族迁徙与战争频繁，政权更替很快。', link: '北方长期分裂。' },
+    { start: 317, end: 420, name: '东晋', lane: 3, detail: '晋室南渡后建都建康，维持江南政权。', link: '南方政权。' },
+    { start: 420, end: 479, name: '刘宋', lane: 3, detail: '南朝第一个政权，控制长江以南大部分地区。', link: '南朝之一。' },
+    { start: 386, end: 439, name: '北魏早期', lane: 2, detail: '北魏386年建立，起初只是北方多个政权之一，逐步扩张。', link: '439年前与北方其他政权并存。' },
+    { start: 439, end: 534, name: '北魏', lane: 1, span: 2, detail: '北魏439年统一北方，孝文帝改革推动制度与文化整合。', link: '北朝之一，北方进入相对统一阶段。' },
+    { start: 479, end: 502, name: '南齐', lane: 3, detail: '承接刘宋之后的南方政权，统治时间较短。', link: '南朝之一。' },
+    { start: 502, end: 557, name: '梁', lane: 3, detail: '梁朝文化繁荣，但侯景之乱严重削弱南方政权。', link: '南朝之一。' },
+    { start: 534, end: 550, name: '东魏', lane: 2, detail: '北魏分裂后的东部政权，实际权力掌握在高氏集团手中。', link: '北朝东西分裂。' },
+    { start: 535, end: 557, name: '西魏', lane: 1, detail: '北魏分裂后的西部政权，宇文氏集团逐渐掌权。', link: '北朝东西分裂。' },
+    { start: 550, end: 577, name: '北齐', lane: 2, detail: '取代东魏，占据华北东部，后被北周灭亡。', link: '北朝之一。' },
+    { start: 557, end: 581, name: '北周', lane: 1, detail: '取代西魏，577年灭北齐后统一北方，为隋统一奠定基础。', link: '北朝之一。' },
+    { start: 557, end: 589, name: '陈', lane: 3, detail: '南朝最后一个政权，589年被隋灭亡，中国重新统一。', link: '南朝之一。' }
   ],
   rome: [
     { start: -300, end: -264, name: '统一意大利', detail: '罗马逐步控制意大利半岛，形成由罗马主导的同盟体系。', link: '同期：中国正处于战国时期。' },
-    { start: -264, end: -146, name: '布匿战争', detail: '罗马与迦太基三次交战，最终成为西地中海的强国。', link: '第二次战争时期，秦汉在中国交替。' },
-    { start: -146, end: -27, name: '共和国晚期', detail: '罗马继续扩张，但内部冲突加剧，凯撒等军事领袖崛起。', link: '同期：汉朝开拓丝绸之路。' },
-    { start: -27, end: 96, name: '帝国前期', detail: '奥古斯都建立元首制，罗马进入相对稳定的“罗马和平”时期。', link: '同期：中国经历西汉末年与东汉初年。' },
-    { start: 96, end: 200, name: '帝国鼎盛', detail: '图拉真时期疆域达到最大，城市、道路和贸易网络十分发达。', link: '同期：中国东汉改进了造纸术。' }
+    { start: -264, end: -146, name: '布匿战争', detail: '罗马与迦太基三次交战，成为西地中海强国。', link: '第二次布匿战争时期，中国进入秦汉之交。' },
+    { start: -146, end: -27, name: '共和国晚期', detail: '罗马继续扩张，但内部冲突加剧，军事领袖崛起。', link: '同期：汉朝开拓丝绸之路。' },
+    { start: -27, end: 96, name: '帝国前期', detail: '奥古斯都建立元首制，罗马进入相对稳定的帝国时期。', link: '同期：中国经历西汉末年与东汉初年。' },
+    { start: 96, end: 180, name: '五贤帝时期', detail: '帝国疆域广阔，城市、道路与贸易网络高度发达。', link: '同期：中国东汉改进造纸术。' },
+    { start: 180, end: 284, name: '三世纪危机', detail: '内战、边境压力和财政问题频发，皇帝更替迅速。', link: '同期：中国从汉末走向三国。' },
+    { start: 284, end: 395, name: '帝国重组', detail: '戴克里先与君士坦丁改革帝国，君士坦丁堡成为新的政治中心。', link: '同期：中国经历西晋、东晋与十六国。' },
+    { start: 395, end: 476, name: '东西分治', detail: '帝国东西分治，西部压力不断加剧，476年西罗马皇帝被废。', link: '同期：中国进入南北朝格局。' },
+    { start: 476, end: 589, name: '东罗马', detail: '东罗马帝国延续罗马传统，查士丁尼时期一度收复部分西地中海地区。', link: '同期：中国北朝、南朝并立，隋最终统一。' }
   ],
   india: [
     { start: -300, end: -185, name: '孔雀王朝', detail: '孔雀王朝统一印度北部大部分地区，阿育王推动佛教传播。', link: '同期：中国从战国走向秦汉统一。' },
     { start: -185, end: -73, name: '巽伽王朝', detail: '孔雀王朝结束后，巽伽王朝统治恒河流域中东部地区。', link: '同期：汉朝开始经营西域。' },
     { start: -73, end: 30, name: '诸国并立', detail: '多个地区政权并存，印度与希腊、波斯和中亚文化持续交流。', link: '同期：罗马帝国建立。' },
-    { start: 30, end: 200, name: '贵霜帝国', detail: '贵霜帝国控制中亚和印度北部的重要商路，佛教艺术与贸易兴盛。', link: '它把汉朝与罗马之间的贸易路线连接起来。' }
+    { start: 30, end: 250, name: '贵霜帝国', detail: '贵霜帝国控制中亚和印度北部商路，佛教艺术与贸易兴盛。', link: '连接汉朝与罗马之间的贸易路线。' },
+    { start: 250, end: 320, name: '地区王国', detail: '贵霜势力衰落后，北印度多政权并立，南印度贸易继续活跃。', link: '同期：中国经历三国与西晋。' },
+    { start: 320, end: 550, name: '笈多王朝', detail: '笈多王朝统治北印度大部，数学、文学、宗教艺术繁荣。', link: '同期：中国处于东晋、十六国和南北朝。' },
+    { start: 550, end: 589, name: '后笈多时期', detail: '笈多权威衰落，北印度再度形成多个地区政权。', link: '同期：中国北周、陈并立，随后隋统一。' }
   ],
   greece: [
-    { start: -300, end: -281, name: '继业者战争', detail: '亚历山大去世后，他的将领争夺领土，希腊化世界逐渐形成。', link: '同期：中国七国争雄。' },
-    { start: -281, end: -146, name: '希腊化时代', detail: '希腊语言、艺术与科学传播到埃及、西亚和中亚。', link: '这些文化也影响了印度西北部。' },
-    { start: -146, end: -27, name: '罗马统治', detail: '希腊本土被纳入罗马势力范围，但希腊文化继续影响罗马。', link: '同期：中国处于汉武帝前后。' },
-    { start: -27, end: 200, name: '罗马时期希腊', detail: '雅典仍是哲学与教育中心，希腊语在罗马帝国东部广泛使用。', link: '希腊知识通过罗马世界继续传播。' }
+    { start: -300, end: -281, name: '继业者战争', detail: '亚历山大去世后，将领争夺领土，希腊化世界逐渐形成。', link: '同期：中国七国争雄。' },
+    { start: -281, end: -146, name: '希腊化时代', detail: '希腊语言、艺术与科学传播到埃及、西亚和中亚。', link: '这些文化也影响印度西北部。' },
+    { start: -146, end: -27, name: '罗马统治', detail: '希腊本土纳入罗马势力范围，但希腊文化继续影响罗马。', link: '同期：中国处于汉武帝前后。' },
+    { start: -27, end: 330, name: '罗马时期希腊', detail: '雅典仍是哲学与教育中心，希腊语在罗马帝国东部广泛使用。', link: '希腊知识通过罗马世界继续传播。' },
+    { start: 330, end: 565, name: '拜占庭核心区', detail: '君士坦丁堡成为东地中海中心，希腊语文化在东罗马世界延续。', link: '同期：中国经历东晋、南北朝。' },
+    { start: 565, end: 589, name: '查士丁尼之后', detail: '东罗马继续控制东地中海要地，但战争与财政压力上升。', link: '同期：中国即将由隋重新统一。' }
   ]
 };
-
-const words = [
-  { hanzi: '秦', pinyin: 'Qín · 第二声', title: '秦', detail: '第一个统一中国的王朝', speak: '秦，Qín' },
-  { hanzi: '统一', pinyin: 'tǒng yī · 第三声＋第一声', title: '统一', detail: '把许多部分合成一个整体', speak: '统一，tǒng yī' },
-  { hanzi: '皇帝', pinyin: 'huáng dì · 第二声＋第四声', title: '皇帝', detail: '帝国的最高统治者', speak: '皇帝，huáng dì' }
-];
-
-const quizzes = [
-  { q: '公元前221年秦统一中国时，罗马实行什么制度？', a: ['共和国', '帝国', '王国', '还没有建立'], correct: 0, note: '答对了！直到公元前27年，罗马才进入帝国时代。' },
-  { q: '“统一”（tǒng yī）是什么意思？', a: ['去旅行', '写文字', '合为一体', '做买卖'], correct: 2, note: '答对了！“统一”就是把多个部分合为一个整体。' },
-  { q: '后来，哪条道路把汉朝中国与遥远的国家连接起来？', a: ['琥珀之路', '丝绸之路', '波斯御道', '阿庇亚大道'], correct: 1, note: '没错！丝绸之路运送商品，也传播人员、知识和思想。' }
-];
 
 const slider = document.querySelector('#yearSlider');
 const yearLabel = document.querySelector('#yearLabel');
@@ -63,38 +84,72 @@ const eraLabel = document.querySelector('#eraLabel');
 const stageYear = document.querySelector('#stageYear');
 const timelineChart = document.querySelector('#timelineChart');
 const selectedYearLine = document.querySelector('#selectedYearLine');
-let soundOn = true;
+const activePanel = document.querySelector('#activePanel');
 
-function formatYear(year) { return year < 0 ? `公元前${Math.abs(year)}年` : year === 0 ? '公元1年' : `公元${year}年`; }
-function nearestMoment(year) { return moments.reduce((best, item) => Math.abs(item.year - year) < Math.abs(best.year - year) ? item : best); }
+function formatYear(year) {
+  if (year < 0) return `公元前${Math.abs(year)}年`;
+  if (year === 0) return '公元1年';
+  return `公元${year}年`;
+}
 
-const chartStart = -300;
-const chartEnd = 200;
-const chartBodyTop = 48;
+function periodPosition(period, chartBodyHeight) {
+  const top = chartBodyTop + ((period.start - chartStart) / (chartEnd - chartStart)) * chartBodyHeight;
+  const height = Math.max(22, ((period.end - period.start) / (chartEnd - chartStart)) * chartBodyHeight);
+  return { top, height };
+}
 
 function buildChart() {
   const axis = document.querySelector('#timeAxis');
   axis.innerHTML = '';
   const chartBodyHeight = document.querySelector('.history-chart').clientHeight - chartBodyTop;
-  for (let year = chartStart; year <= chartEnd; year += 50) {
+
+  [-300, -200, -100, 1, 100, 200, 300, 400, 500, 589].forEach(year => {
     const tick = document.createElement('div');
     tick.className = 'axis-tick';
     tick.style.top = `${((year - chartStart) / (chartEnd - chartStart)) * 100}%`;
-    tick.innerHTML = `<b>${year < 0 ? `前${Math.abs(year)}年` : year === 0 ? '公元元年' : `${year}年`}</b>`;
+    tick.innerHTML = `<b>${year < 0 ? `前${Math.abs(year)}年` : `${year}年`}</b>`;
     axis.append(tick);
-  }
+  });
+
   timelineChart.innerHTML = Object.entries(civMeta).map(([key, meta]) => {
+    const lanes = meta.lanes || [''];
+    const laneLabels = lanes.map(label => `<span>${label}</span>`).join('');
     const blocks = periods[key].map(period => {
-      const top = chartBodyTop + ((period.start - chartStart) / (chartEnd - chartStart)) * chartBodyHeight;
-      const height = Math.max(23, ((period.end - period.start) / (chartEnd - chartStart)) * chartBodyHeight);
-      const compactClass = period.end - period.start < 35 ? ' compact-period' : '';
-      return `<button class="period-block period-${key}${compactClass}" style="top:${top}px;height:${height}px" data-start="${period.start}" data-end="${period.end}" aria-label="${period.name}，${formatYear(period.start)}至${formatYear(period.end)}">
-        <strong>${period.name}</strong><small>${formatYear(period.start)}—${formatYear(period.end)}</small>
-        <span class="period-tip"><b>${formatYear(period.start)}—${formatYear(period.end)}</b><strong>${period.name}</strong><p>${period.detail}</p><em>${period.link}</em></span>
+      const { top, height } = periodPosition(period, chartBodyHeight);
+      const lane = period.lane ?? 0;
+      const span = period.span ?? (meta.lanes && period.lane === undefined ? lanes.length : 1);
+      const laneWidth = 100 / lanes.length;
+      const left = 4 + (lane * laneWidth);
+      const right = 4 + ((lanes.length - lane - span) * laneWidth);
+      const compactClass = period.end - period.start < 38 ? ' compact-period' : '';
+      const splitClass = lanes.length > 1 ? ' split-period' : '';
+      return `<button class="period-block period-${key}${compactClass}${splitClass}" style="top:${top}px;height:${height}px;left:calc(${left}% + 2px);right:calc(${right}% + 2px)" data-civ="${key}" data-start="${period.start}" data-end="${period.end}" aria-label="${period.name}，${formatYear(period.start)}至${formatYear(period.end)}">
+        <strong>${period.name}</strong><small>${formatYear(period.start)}-${formatYear(period.end)}</small>
+        <span class="period-tip"><b>${formatYear(period.start)}-${formatYear(period.end)}</b><strong>${period.name}</strong><p>${period.detail}</p><em>${period.link}</em></span>
       </button>`;
     }).join('');
-    return `<section class="chart-column"><div class="column-head head-${key}"><span>${meta.icon}</span>${meta.label}</div>${blocks}</section>`;
+    return `<section class="chart-column ${lanes.length > 1 ? 'has-lanes' : ''}"><div class="column-head head-${key}"><span>${meta.icon}</span>${meta.label}</div><div class="lane-labels">${laneLabels}</div>${blocks}</section>`;
   }).join('');
+}
+
+function activePeriods(year) {
+  return Object.entries(periods).flatMap(([key, items]) => {
+    return items
+      .filter(period => year >= period.start && (year < period.end || period.end === chartEnd))
+      .map(period => ({ ...period, civ: key, civLabel: civMeta[key].label }));
+  });
+}
+
+function renderActivePanel(year) {
+  const current = activePeriods(year);
+  activePanel.innerHTML = current.map(period => `
+    <article class="active-card ${civMeta[period.civ].className}">
+      <span>${period.civLabel}</span>
+      <h3>${period.name}</h3>
+      <p>${period.detail}</p>
+      <small>${period.link}</small>
+    </article>
+  `).join('');
 }
 
 function renderMoment(year) {
@@ -108,6 +163,7 @@ function renderMoment(year) {
     const active = year >= Number(block.dataset.start) && (year < end || end === chartEnd);
     block.classList.toggle('active-period', active);
   });
+  renderActivePanel(year);
 }
 
 function keepYearLineVisible() {
@@ -121,15 +177,17 @@ function keepYearLineVisible() {
   }
 }
 
-slider.addEventListener('input', e => {
-  renderMoment(Number(e.target.value));
+slider.addEventListener('input', event => {
+  renderMoment(Number(event.target.value));
   requestAnimationFrame(keepYearLineVisible);
 });
+
 const quickYears = document.querySelector('#quickYears');
-moments.forEach(moment => {
+moments.forEach((moment, index) => {
   const button = document.createElement('button');
-  button.textContent = formatYear(moment.year);
-  button.style.left = `${((moment.year + 300) / 500) * 100}%`;
+  button.textContent = moment.label;
+  button.style.left = `${((moment.year - chartStart) / (chartEnd - chartStart)) * 100}%`;
+  button.style.top = `${index % 2 === 0 ? 0 : 20}px`;
   button.addEventListener('click', () => {
     slider.value = moment.year;
     renderMoment(moment.year);
@@ -138,68 +196,14 @@ moments.forEach(moment => {
   quickYears.append(button);
 });
 
-function speak(text, rate = .75) {
-  if (!soundOn || !('speechSynthesis' in window)) return;
-  speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = 'zh-CN'; utterance.rate = rate;
-  speechSynthesis.speak(utterance);
-}
-
-document.querySelector('#wordGrid').innerHTML = words.map((word, index) => `
-  <button class="word-card" data-word="${index}"><span class="speaker">♪</span><span class="hanzi">${word.hanzi}</span><span class="tone">${word.pinyin}</span><strong>${word.title}</strong><small>${word.detail}</small></button>
-`).join('');
-document.querySelectorAll('.word-card').forEach(card => card.addEventListener('click', () => {
-  document.querySelectorAll('.word-card').forEach(c => c.classList.remove('playing'));
-  card.classList.add('playing'); speak(words[card.dataset.word].speak, .65);
-  setTimeout(() => card.classList.remove('playing'), 1200);
-}));
-
-document.querySelector('#listenStory').addEventListener('click', () => speak('秦始皇统一了中国。', .65));
-document.querySelector('#soundToggle').addEventListener('click', event => {
-  soundOn = !soundOn; event.currentTarget.setAttribute('aria-pressed', soundOn);
-  event.currentTarget.innerHTML = soundOn ? '♪ <span>声音已开启</span>' : '× <span>声音已关闭</span>';
-  if (!soundOn && 'speechSynthesis' in window) speechSynthesis.cancel();
-});
-
-let quizIndex = 0;
-let score = 0;
-function renderQuiz() {
-  const quiz = quizzes[quizIndex];
-  document.querySelector('#quizCount').textContent = `${quizIndex + 1} / ${quizzes.length}`;
-  document.querySelector('#quizProgress').style.width = `${((quizIndex + 1) / quizzes.length) * 100}%`;
-  document.querySelector('#questionText').textContent = quiz.q;
-  const optionLabels = ['甲', '乙', '丙', '丁'];
-  document.querySelector('#answers').innerHTML = quiz.a.map((answer, i) => `<button class="answer" data-answer="${i}">${optionLabels[i]}、${answer}</button>`).join('');
-  document.querySelector('#feedback').textContent = '';
-  document.querySelector('#nextQuestion').hidden = true;
-  document.querySelectorAll('.answer').forEach(button => button.addEventListener('click', chooseAnswer));
-}
-function chooseAnswer(event) {
-  const chosen = Number(event.currentTarget.dataset.answer);
-  const quiz = quizzes[quizIndex];
-  document.querySelectorAll('.answer').forEach((button, i) => { button.disabled = true; if (i === quiz.correct) button.classList.add('correct'); });
-  if (chosen === quiz.correct) { score++; document.querySelector('#feedback').textContent = `✓ ${quiz.note}`; }
-  else { event.currentTarget.classList.add('wrong'); document.querySelector('#feedback').textContent = `再想一想！${quiz.note}`; }
-  const next = document.querySelector('#nextQuestion'); next.hidden = false; next.textContent = quizIndex === quizzes.length - 1 ? '查看得分 →' : '下一题 →';
-}
-document.querySelector('#nextQuestion').addEventListener('click', () => {
-  if (quizIndex < quizzes.length - 1) { quizIndex++; renderQuiz(); }
-  else {
-    document.querySelector('#questionText').textContent = `你获得了 ${score} 颗星，共 3 颗！`;
-    document.querySelector('#answers').innerHTML = `<button class="answer" id="restartQuiz">↻ 再挑战一次</button>`;
-    document.querySelector('#feedback').textContent = score === 3 ? '太棒了！你是一位出色的小历史学家。' : '继续探索时间轴，然后再试一次吧。';
-    document.querySelector('#nextQuestion').hidden = true;
-    document.querySelector('#restartQuiz').addEventListener('click', () => { quizIndex = 0; score = 0; renderQuiz(); });
-  }
-});
-
 buildChart();
 renderMoment(-221);
-renderQuiz();
 
 let resizeTimer;
 window.addEventListener('resize', () => {
   clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => { buildChart(); renderMoment(Number(slider.value)); }, 120);
+  resizeTimer = setTimeout(() => {
+    buildChart();
+    renderMoment(Number(slider.value));
+  }, 120);
 });

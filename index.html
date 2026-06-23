@@ -14,12 +14,6 @@
       <span class="brand-mark">史</span>
       <span>历史地图 <small>世界史互动学习</small></span>
     </a>
-    <div class="progress-wrap" aria-label="今日学习进度">
-      <span>今日进度</span>
-      <div class="progress"><i></i></div>
-      <strong>2 / 3</strong>
-    </div>
-    <button class="sound-button" id="soundToggle" aria-pressed="true" title="开关声音">♪ <span>声音已开启</span></button>
   </header>
 
   <main>
@@ -27,18 +21,18 @@
       <div>
         <p class="eyebrow">环游世界 · 同一个世界</p>
         <h1>同一个时代，<br><em>世界在发生什么？</em></h1>
-        <p class="intro">穿越时空，认识四大文明，在世界的故事中学习历史。</p>
+        <p class="intro">拖动年份，观察中国与同期世界文明的延续、交替和分裂状态。</p>
       </div>
       <aside class="mission">
-        <span class="mission-icon">✦</span>
-        <div><small>今日任务</small><strong>统一古代中国</strong><span>+ 30 星星</span></div>
+        <span class="mission-icon">分</span>
+        <div><small>当前重点</small><strong>统一与分裂</strong><span>三国 · 两晋 · 南北朝</span></div>
       </aside>
     </section>
 
     <section class="time-machine" aria-labelledby="timelineTitle">
       <div class="time-heading">
         <div>
-          <p class="section-number">01 · 时光机</p>
+          <p class="section-number">01 · 历史数据</p>
           <h2 id="timelineTitle">选择一个历史时刻</h2>
         </div>
         <div class="year-display"><span id="yearLabel">221</span><small id="eraLabel">公元前</small></div>
@@ -46,63 +40,31 @@
 
       <div class="slider-row">
         <span>公元前300年</span>
-        <input id="yearSlider" type="range" min="-300" max="200" step="1" value="-221" aria-label="选择公元前300年至公元200年之间的年份" />
-        <span>公元200年</span>
+        <input id="yearSlider" type="range" min="-300" max="589" step="1" value="-221" aria-label="选择公元前300年至公元589年之间的年份" />
+        <span>公元589年</span>
       </div>
       <div class="quick-years" id="quickYears" aria-label="重要年份"></div>
 
       <div class="world-stage" id="worldStage">
-        <div class="chart-key"><span><i class="key-line"></i>当前年份</span><span>方块越高，延续时间越长</span><b>悬浮方块查看详情</b></div>
+        <div class="chart-key"><span><i class="key-line"></i>当前年份</span><span>中国列的分道表示并立政权</span><b>悬浮方块查看详情</b></div>
         <div class="history-chart">
           <div class="time-axis" id="timeAxis" aria-hidden="true"></div>
           <div class="chart-columns" id="timelineChart"></div>
           <div class="selected-year-line" id="selectedYearLine"><b id="stageYear">公元前221年</b></div>
         </div>
       </div>
-      <p class="timeline-hint">← 拖动时间轴，看看世界如何变化 →</p>
-    </section>
+      <p class="timeline-hint">← 拖动时间轴，查看当前年份的政权格局 →</p>
 
-    <section class="story-section" aria-labelledby="storyTitle">
-      <article class="story-card">
-        <div class="story-art" aria-hidden="true">
-          <div class="sun"></div><div class="mountain m1"></div><div class="mountain m2"></div>
-          <div class="wall"><i></i><i></i><i></i></div>
-          <span class="seal">秦</span>
+      <div class="active-section" aria-labelledby="activeTitle">
+        <div class="section-head">
+          <div><p class="section-number">02 · 当前年份</p><h2 id="activeTitle">这一年正在发生什么</h2></div>
         </div>
-        <div class="story-copy">
-          <p class="section-number">02 · 中国故事</p>
-          <h2 id="storyTitle">天下一统，始称皇帝</h2>
-          <p class="story-cn" id="storyChinese">秦始皇统一了中国。</p>
-          <p id="storyBody">公元前221年，秦王结束了数百年的战争，成为中国第一位皇帝。他在新的帝国中统一文字、货币和度量衡，还修建道路、连接城墙。</p>
-          <button class="primary" id="listenStory">▶ 听一听，读一读</button>
-        </div>
-      </article>
-    </section>
-
-    <section class="learn-section" aria-labelledby="learnTitle">
-      <div class="section-head">
-        <div><p class="section-number">03 · 汉字宝藏</p><h2 id="learnTitle">解锁三个历史词语</h2></div>
-        <span class="badge">点击听发音</span>
-      </div>
-      <div class="word-grid" id="wordGrid"></div>
-    </section>
-
-    <section class="quiz-section" aria-labelledby="quizTitle">
-      <div class="quiz-card">
-        <div class="quiz-top">
-          <div><p class="section-number light">04 · 快速挑战</p><h2 id="quizTitle">你能把世界联系起来吗？</h2></div>
-          <span id="quizCount">1 / 3</span>
-        </div>
-        <div class="quiz-progress"><i id="quizProgress"></i></div>
-        <p class="question" id="questionText"></p>
-        <div class="answers" id="answers"></div>
-        <div class="feedback" id="feedback" role="status"></div>
-        <button class="next-button" id="nextQuestion" hidden>下一题 →</button>
+        <div class="active-panel" id="activePanel"></div>
       </div>
     </section>
   </main>
 
-  <footer><span>史</span><p>历史是一个大故事。<br><small>从中国出发，看见整个世界。</small></p><b>献给充满好奇心的你</b></footer>
+  <footer><span>史</span><p>历史是一个大故事。<br><small>从中国出发，看见整个世界。</small></p><b>公元前300年 - 公元589年</b></footer>
   <script src="app.js"></script>
 </body>
 </html>

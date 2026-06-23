@@ -19,10 +19,6 @@ button { color: inherit; }
 .brand { color: var(--ink); display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 900; letter-spacing: -.02em; }
 .brand small { display: block; font-weight: 600; font-size: 10px; letter-spacing: .14em; }
 .brand-mark, footer > span { background: var(--red); color: white; width: 37px; height: 37px; display: grid; place-items: center; border-radius: 8px; font-family: serif; font-size: 22px; transform: rotate(-3deg); }
-.progress-wrap { display: flex; align-items: center; gap: 10px; font-size: 12px; }
-.progress { width: 120px; height: 7px; background: #e7dfd2; border-radius: 9px; overflow: hidden; }
-.progress i { width: 66%; height: 100%; display: block; background: var(--gold); }
-.sound-button { border: 1px solid var(--line); background: transparent; border-radius: 20px; padding: 8px 12px; cursor: pointer; }
 
 main { overflow: hidden; }
 .hero { max-width: 1180px; margin: auto; padding: 80px 24px 66px; display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; position: relative; }
@@ -31,12 +27,12 @@ main { overflow: hidden; }
 h1 { font-family: Georgia, "Songti SC", serif; font-size: clamp(48px, 7vw, 82px); line-height: .96; letter-spacing: -.055em; margin: 0; max-width: 850px; }
 h1 em { color: var(--red); font-weight: normal; }
 .intro { max-width: 510px; font-size: 18px; color: #566b67; line-height: 1.6; }
-.mission { min-width: 270px; display: flex; align-items: center; gap: 14px; padding: 18px; background: var(--ink); color: white; border-radius: 14px; box-shadow: 7px 7px 0 #e0b251; transform: rotate(1deg); }
-.mission-icon { font-size: 28px; color: var(--gold); }
+.mission { min-width: 270px; display: flex; align-items: center; gap: 14px; padding: 18px; background: var(--ink); color: white; border-radius: 10px; box-shadow: 7px 7px 0 #e0b251; transform: rotate(1deg); }
+.mission-icon { width: 42px; height: 42px; display: grid; place-items: center; background: var(--gold); color: var(--ink); border-radius: 8px; font-weight: 900; }
 .mission small, .mission span { display: block; color: #e7cf91; font-size: 10px; letter-spacing: .12em; }
 .mission strong { display: block; margin: 4px 0; }
 
-.time-machine { max-width: 1180px; margin: auto; padding: 20px 24px 82px; }
+.time-machine { max-width: 1260px; margin: auto; padding: 20px 24px 82px; }
 .time-heading, .section-head { display: flex; justify-content: space-between; align-items: flex-end; }
 h2 { margin: 0; font: 700 clamp(30px, 4vw, 46px)/1.05 Georgia, "Songti SC", serif; letter-spacing: -.035em; }
 .year-display { display: flex; align-items: baseline; gap: 8px; }
@@ -44,93 +40,81 @@ h2 { margin: 0; font: 700 clamp(30px, 4vw, 46px)/1.05 Georgia, "Songti SC", seri
 .year-display small { font-weight: 800; }
 .slider-row { display: flex; align-items: center; gap: 15px; margin: 32px 0 10px; font-size: 11px; font-weight: 800; }
 input[type="range"] { width: 100%; accent-color: var(--red); cursor: grab; }
-.quick-years { height: 34px; position: relative; margin: 0 58px 12px; }
-.quick-years button { position: absolute; transform: translateX(-50%); border: 0; background: transparent; color: #7b746a; font-size: 10px; cursor: pointer; padding: 7px; }
+.quick-years { height: 62px; position: relative; margin: 0 58px 12px; }
+.quick-years button { position: absolute; transform: translateX(-50%); border: 0; background: transparent; color: #7b746a; font-size: 10px; line-height: 1.1; cursor: pointer; padding: 7px 2px; width: 68px; }
 .quick-years button::before { content: ""; width: 1px; height: 6px; background: #948a7d; position: absolute; left: 50%; top: -3px; }
-.world-stage { background: var(--white); border: 1px solid #ddd0bd; border-radius: 20px; padding: 20px; box-shadow: 0 16px 44px rgba(59,46,28,.08); }
+.world-stage { background: var(--white); border: 1px solid #ddd0bd; border-radius: 20px; padding: 20px; box-shadow: 0 16px 44px rgba(59,46,28,.08); overflow-x: auto; }
 .chart-key { display: flex; align-items: center; gap: 22px; min-height: 32px; margin-bottom: 12px; padding-left: 80px; color: #7b746a; font-size: 11px; }
 .chart-key span { display: flex; align-items: center; gap: 7px; }.chart-key b { margin-left: auto; color: var(--red); }
 .key-line { display: inline-block; width: 20px; border-top: 2px dashed var(--red); }
-.history-chart { height: clamp(460px, 62vh, 680px); position: relative; padding-left: 80px; }
+.history-chart { height: clamp(780px, 118vh, 1040px); position: relative; padding-left: 80px; }
 .time-axis { position: absolute; left: 0; top: 48px; bottom: 0; width: 73px; border-right: 1px solid #a99c8b; }
 .axis-tick { position: absolute; right: 0; width: 100%; border-top: 1px solid #ded4c5; color: #756c61; font-size: 10px; }
 .axis-tick b { position: absolute; right: 10px; top: -8px; font-weight: 700; white-space: nowrap; }
 .chart-columns { height: 100%; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
 .chart-column { position: relative; height: 100%; border-left: 1px solid #e8dfd2; border-right: 1px solid #e8dfd2; background: repeating-linear-gradient(to bottom, rgba(117,106,91,.055) 0 1px, transparent 1px 71px); }
+.chart-column.has-lanes { background: linear-gradient(to right, rgba(201,73,61,.08) 0 25%, rgba(201,73,61,.03) 25% 50%, rgba(201,73,61,.08) 50% 75%, rgba(201,73,61,.03) 75% 100%), repeating-linear-gradient(to bottom, rgba(117,106,91,.055) 0 1px, transparent 1px 71px); }
 .column-head { height: 48px; display: flex; align-items: center; justify-content: center; gap: 8px; color: white; font-weight: 900; font-size: 13px; letter-spacing: .08em; position: relative; z-index: 4; }
 .column-head span { font-size: 18px; }.head-china { background:#a93d34; }.head-rome { background:#b77c20; }.head-india { background:#24645e; }.head-greece { background:#345a7f; }
+.lane-labels { position: absolute; top: 25px; left: 3px; right: 3px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; z-index: 5; pointer-events: none; }
+.lane-labels span { padding: 2px 1px; color: #fff8e9; background: rgba(88,23,18,.26); border: 1px solid rgba(255,255,255,.2); border-radius: 4px; text-align: center; font-size: 8px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chart-column:not(.has-lanes) .lane-labels { display: none; }
 .period-block { position: absolute; left: 5px; right: 5px; z-index: 2; border: 0; border-radius: 5px; padding: 10px 9px; color: white; text-align: left; cursor: help; box-shadow: inset 0 0 0 1px rgba(255,255,255,.28); overflow: visible; transition: filter .15s, transform .15s, opacity .2s; }
 .period-block::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(135deg, rgba(255,255,255,.16), transparent 50%); pointer-events: none; }
 .period-block strong { display: block; font: 700 clamp(13px, 1.7vw, 20px)/1.08 Georgia, "Songti SC", serif; position: relative; z-index: 1; }
 .period-block small { display: block; margin-top: 4px; font-size: 9px; opacity: .85; position: relative; z-index: 1; }
+.period-block.split-period { padding: 8px 5px; }
+.period-block.split-period strong { font-size: clamp(10px, 1vw, 15px); overflow-wrap: anywhere; }
+.period-block.split-period small { font-size: 8px; }
 .period-block.compact-period { min-height: 34px; padding: 5px 7px; z-index: 4; display: flex; align-items: center; overflow: visible; }
-.period-block.compact-period strong { font-size: 13px; line-height: 1; white-space: nowrap; text-shadow: 0 1px 2px rgba(0,0,0,.2); }
+.period-block.compact-period strong { font-size: 11px; line-height: 1.08; white-space: normal; overflow-wrap: anywhere; text-shadow: 0 1px 2px rgba(0,0,0,.2); }
 .period-block.compact-period small { display: none; }
 .period-block.compact-period::before { content: ""; position: absolute; left: 7px; right: 7px; bottom: 2px; border-bottom: 1px solid rgba(255,255,255,.45); }
 .period-block:not(.active-period) { filter: saturate(.68); opacity: .8; }.period-block.active-period { filter: saturate(1.15); box-shadow: inset 0 0 0 2px white, 0 0 0 3px rgba(24,59,56,.35); z-index: 5; }
 .period-block.compact-period { z-index: 7; }.period-block.compact-period.active-period { z-index: 8; }
-.period-block:hover, .period-block:focus-visible { filter: saturate(1.12) brightness(1.05); transform: translateY(-2px); z-index: 10; outline: 3px solid #fff; }
+.period-block:hover, .period-block:focus-visible { filter: saturate(1.12) brightness(1.05); transform: none; z-index: 10; outline: 3px solid #fff; }
 .period-china { background:#c8493d; }.period-rome { background:#d39a2e; }.period-india { background:#32766f; }.period-greece { background:#436a91; }
-.period-tip { display: none; position: absolute; z-index: 30; left: calc(100% + 10px); top: 8px; width: 250px; padding: 16px; border-radius: 10px; background: #173936; color: white; box-shadow: 0 15px 34px rgba(26,35,31,.28); pointer-events: none; }
-.chart-column:nth-child(n+3) .period-tip { left: auto; right: calc(100% + 10px); }
+.period-tip { display: none; position: fixed; z-index: 80; right: max(22px, calc((100vw - 1260px) / 2 + 22px)); bottom: 24px; width: min(330px, calc(100vw - 44px)); padding: 16px; border-radius: 10px; background: #173936; color: white; box-shadow: 0 15px 34px rgba(26,35,31,.28); pointer-events: none; text-align: left; }
+.chart-column:nth-child(n+3) .period-tip { left: auto; right: max(22px, calc((100vw - 1260px) / 2 + 22px)); }
 .period-block:hover .period-tip, .period-block:focus-visible .period-tip { display: block; }
-.period-tip::before { content:""; position:absolute; left:-7px; top:17px; border:7px solid transparent; border-right-color:#173936; border-left:0; }.chart-column:nth-child(n+3) .period-tip::before { left:auto; right:-7px; border-right:0; border-left:7px solid #173936; }
-.period-tip b { display: block; color: #f0bd55; font-size: 10px; letter-spacing: .08em; margin-bottom: 7px; }.period-tip strong { font-size: 18px; }.period-tip p { margin: 9px 0 0; font-size: 12px; line-height: 1.65; }.period-tip em { display:block; margin-top:10px; padding-top:9px; border-top:1px solid rgba(255,255,255,.18); color:#f2d28d; font-style:normal; font-size:11px; line-height:1.5; }
+.period-tip::before { content:""; position:absolute; right:24px; bottom:-7px; border:7px solid transparent; border-top-color:#173936; border-bottom:0; }
+.chart-column:nth-child(n+3) .period-tip::before { left:auto; right:24px; border:7px solid transparent; border-top-color:#173936; border-bottom:0; }
+.period-tip b { display: block; color: #f0bd55; font-size: 10px; letter-spacing: .08em; margin-bottom: 7px; }.period-tip strong { display:block; color:white; font: 700 18px/1.15 Georgia, "Songti SC", serif; }.period-tip p { margin: 9px 0 0; color:white; font-size: 12px; line-height: 1.65; }.period-tip em { display:block; margin-top:10px; padding-top:9px; border-top:1px solid rgba(255,255,255,.18); color:#f2d28d; font-style:normal; font-size:11px; line-height:1.5; }
 .selected-year-line { position: absolute; left: 74px; right: 0; top: 161px; z-index: 6; border-top: 2px dashed var(--red); pointer-events: none; transition: top .12s; }
 .selected-year-line b { position: absolute; left: -74px; top: -13px; width: 68px; padding: 4px 2px; border-radius: 4px; background: var(--red); color: white; text-align: center; font-size: 9px; }
 .timeline-hint { text-align: center; color: #847c71; font-size: 11px; }
 
-.story-section { background: #183b38; padding: 84px 24px; }
-.story-card { max-width: 1120px; margin: auto; display: grid; grid-template-columns: 1.05fr 1fr; background: #fff9ed; min-height: 470px; border-radius: 20px; overflow: hidden; }
-.story-art { position: relative; overflow: hidden; background: #e9b145; min-height: 430px; }
-.sun { position: absolute; width: 170px; height: 170px; border-radius: 50%; background: #da5540; right: 50px; top: 45px; }
-.mountain { position: absolute; bottom: -70px; width: 460px; height: 300px; background: #244e49; transform: rotate(43deg); border-radius: 35px; }
-.m1 { left: -100px; }.m2 { right: -190px; bottom: -130px; background: #356a62; }
-.wall { position: absolute; bottom: 105px; left: 55px; width: 70%; height: 22px; background: #fff2cf; transform: rotate(-7deg); box-shadow: 0 8px 0 #bd713c; }
-.wall i { position: absolute; bottom: 5px; width: 48px; height: 68px; background: #f8e7bd; border: 6px solid #a85b35; border-bottom: 0; }
-.wall i:nth-child(1){left:4%;}.wall i:nth-child(2){left:45%;}.wall i:nth-child(3){right:0;}
-.seal { position: absolute; left: 35px; top: 35px; border: 3px solid #8e332b; color: #8e332b; font: 50px serif; padding: 10px; }
-.story-copy { padding: clamp(35px, 6vw, 70px); align-self: center; }
-.story-cn { font: 700 28px/1.3 "Songti SC", serif; margin: 26px 0 4px; }
-.pinyin { color: var(--red); margin: 0 0 22px; font-weight: 700; font-size: 14px; }
-.story-copy > p:last-of-type { line-height: 1.75; color: #4d625e; }
-.primary { border: 0; background: var(--red); color: white; padding: 13px 18px; border-radius: 8px; font-weight: 800; cursor: pointer; box-shadow: 4px 4px 0 #e7ad3e; }
-
-.learn-section { max-width: 1180px; margin: auto; padding: 86px 24px; }
-.badge { padding: 8px 12px; border: 1px solid var(--line); border-radius: 20px; font-size: 11px; }
-.word-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 32px; }
-.word-card { text-align: left; border: 1px solid var(--line); background: var(--white); border-radius: 14px; padding: 24px; cursor: pointer; transition: .2s; position: relative; overflow: hidden; }
-.word-card:hover, .word-card.playing { transform: translateY(-4px); border-color: var(--red); box-shadow: 0 12px 25px rgba(70,48,30,.08); }
-.word-card .hanzi { display: block; font: 58px/1 "Songti SC", serif; color: var(--red); }
-.word-card .tone { color: #a39483; font-size: 12px; font-weight: 800; }
-.word-card strong { font-size: 20px; display: block; margin-top: 17px; }
-.word-card small { color: #6c7d79; }
-.word-card .speaker { position: absolute; right: 20px; top: 20px; }
-
-.quiz-section { padding: 40px 24px 100px; }
-.quiz-card { max-width: 850px; margin: auto; background: #c94b3d; color: white; border-radius: 20px; padding: clamp(26px, 5vw, 52px); box-shadow: 9px 9px 0 #e3ad3e; }
-.quiz-top { display: flex; justify-content: space-between; gap: 20px; align-items: start; }.light { color: #f5c999; }.quiz-top > span { border: 1px solid #e98d80; padding: 7px 10px; border-radius: 20px; font-size: 11px; }
-.quiz-progress { height: 5px; background: #a93930; margin: 24px 0 30px; border-radius: 5px; }.quiz-progress i { display: block; height: 100%; background: #f0b641; width: 33%; transition: width .3s; }
-.question { font: 700 23px/1.4 Georgia, "Songti SC", serif; }
-.answers { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.answer { border: 1px solid #e98c82; border-radius: 10px; background: rgba(255,255,255,.08); color: white; text-align: left; padding: 14px; cursor: pointer; }
-.answer:hover { background: rgba(255,255,255,.15); }.answer.correct { background: #236f60; border-color: #8ed2bd; }.answer.wrong { background: #8c302a; opacity: .7; }
-.feedback { min-height: 28px; margin-top: 15px; font-weight: 800; }.next-button { border: 0; background: #fff8e9; color: var(--red); border-radius: 7px; padding: 10px 14px; font-weight: 800; cursor: pointer; }
+.active-section { margin-top: 34px; }
+.active-panel { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
+.active-card { background: var(--white); border: 1px solid var(--line); border-top: 5px solid currentColor; border-radius: 8px; padding: 16px; min-height: 190px; }
+.active-card span { display: block; margin-bottom: 12px; font-size: 10px; color: #83786a; font-weight: 900; letter-spacing: .14em; }
+.active-card h3 { margin: 0 0 10px; color: var(--ink); font: 700 24px/1.05 Georgia, "Songti SC", serif; }
+.active-card p { margin: 0; color: #4d625e; font-size: 13px; line-height: 1.65; }
+.active-card small { display: block; margin-top: 12px; color: #9b4a3f; font-weight: 800; line-height: 1.45; }
+.civ-china { color: #c8493d; }.civ-rome { color: #d39a2e; }.civ-india { color: #32766f; }.civ-greece { color: #436a91; }
 
 footer { border-top: 1px solid var(--line); max-width: 1180px; margin: auto; padding: 35px 24px; display: flex; align-items: center; gap: 15px; } footer p { font-weight: 800; } footer small { font-weight: 500; } footer b { margin-left: auto; font-size: 10px; color: #8b8377; text-transform: uppercase; letter-spacing: .15em; }
 
 @media (max-width: 800px) {
-  .topbar { padding: 0 16px; }.progress-wrap { display: none; }.sound-button span { display: none; }
+  .topbar { padding: 0 16px; }
   .hero { padding-top: 55px; display: block; }.mission { margin-top: 30px; min-width: 0; max-width: 310px; }
-  .history-chart { height: clamp(430px, 59vh, 600px); padding-left: 60px; }.time-axis { width: 53px; }.selected-year-line { left:54px; }.selected-year-line b { left:-54px; width:50px; }.chart-key { padding-left:60px; }.chart-key span:nth-child(2) { display:none; }
-  .chart-columns { gap:4px; }.period-block { left:2px; right:2px; padding:7px 5px; }.period-block strong { font-size:13px; }.period-block small { display:none; }.period-tip { position:fixed; left:18px !important; right:18px !important; top:auto; bottom:18px; width:auto; }.period-tip::before { display:none; }
-  .story-card { grid-template-columns: 1fr; }.story-art { min-height: 310px; }
-  .word-grid { grid-template-columns: 1fr; }.answers { grid-template-columns: 1fr; }
+  h1 { max-width: 340px; font-size: 41px; }
+  .intro { max-width: 310px; overflow-wrap: anywhere; }
+  .time-heading { display: block; }
+  .year-display { margin-top: 14px; justify-content: flex-start; }
+  .quick-years { height: 26px; }
+  .quick-years button { width: 8px; height: 18px; overflow: hidden; color: transparent; padding: 0; }
+  .history-chart { height: clamp(760px, 112vh, 980px); min-width: 820px; padding-left: 60px; }.time-axis { width: 53px; }.selected-year-line { left:54px; }.selected-year-line b { left:-54px; width:50px; }.chart-key { min-width: 820px; padding-left:60px; }.chart-key span:nth-child(2) { display:none; }
+  .chart-columns { gap:4px; }.period-block { left:2px; right:2px; padding:7px 5px; }.period-block strong { font-size:13px; }.period-block small { display:none; }.period-tip { left:18px !important; right:18px !important; top:auto; bottom:18px; width:auto; }.period-tip::before { display:none; }
+  .lane-labels span { font-size: 8px; }
+  .active-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 480px) {
-  h1 { font-size: 45px; }.year-display span { font-size: 42px; }.time-heading { align-items: start; gap: 10px; }
-  .world-stage { padding:10px 6px; }.history-chart { padding-left:48px; height:clamp(410px, 56vh, 540px); }.time-axis { width:43px; }.axis-tick b { right:5px; font-size:8px; }.selected-year-line { left:44px; }.selected-year-line b { left:-44px; width:41px; font-size:8px; }.column-head { font-size:10px; writing-mode:vertical-rl; height:48px; }.column-head span { display:none; }.chart-key { padding-left:48px; }.chart-key b { display:none; }.period-block strong { font-size:11px; }
+  h1 { max-width: 340px; font-size: 41px; }.intro { max-width: 330px; }.year-display { justify-content: flex-start; }.year-display span { font-size: 42px; }.time-heading { align-items: start; gap: 10px; }
+  .world-stage { padding:10px 6px; }.history-chart { min-width: 820px; padding-left:48px; height:clamp(760px, 120vh, 980px); }.time-axis { width:43px; }.axis-tick b { right:5px; font-size:8px; }.selected-year-line { left:44px; }.selected-year-line b { left:-44px; width:41px; font-size:8px; }.column-head { font-size:11px; height:48px; }.column-head span { display:none; }.chart-key { min-width: 820px; padding-left:48px; }.chart-key b { display:none; }.period-block strong { font-size:12px; }
   .quick-years { margin-inline: 25px; }.quick-years button:nth-child(even) { display:none; }
+  .lane-labels { display: none; }
+  .active-panel { grid-template-columns: 1fr; }
   footer b { display:none; }
 }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }
