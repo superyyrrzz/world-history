@@ -1,5 +1,3 @@
-import 'vis-timeline/styles/vis-timeline-graph2d.min.css';
-import './styles.css';
 import { DataSet, Timeline } from 'vis-timeline/standalone';
 import { autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom';
 import {

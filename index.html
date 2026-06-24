@@ -6,9 +6,22 @@
   <meta name="theme-color" content="#f6efe1" />
   <meta name="description" content="从中国历史出发，通过互动时间轴认识同一时期的世界文明。" />
   <title>历史地图 · 同一个世界</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vis-timeline@8.3.1/styles/vis-timeline-graph2d.min.css" />
+  <link rel="stylesheet" href="./src/styles.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "@floating-ui/core": "https://cdn.jsdelivr.net/npm/@floating-ui/core@1.7.5/dist/floating-ui.core.mjs",
+        "@floating-ui/dom": "https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.7.4/dist/floating-ui.dom.mjs",
+        "@floating-ui/utils": "https://cdn.jsdelivr.net/npm/@floating-ui/utils@0.2.11/dist/floating-ui.utils.mjs",
+        "@floating-ui/utils/dom": "https://cdn.jsdelivr.net/npm/@floating-ui/utils@0.2.11/dist/floating-ui.utils.dom.mjs",
+        "vis-timeline/standalone": "https://cdn.jsdelivr.net/npm/vis-timeline@8.3.1/standalone/esm/vis-timeline-graph2d.min.mjs"
+      }
+    }
+  </script>
 </head>
 <body>
   <div id="root"></div>
-  <script type="module" src="/src/main.js"></script>
+  <script type="module" src="./src/main.js"></script>
 </body>
 </html>
