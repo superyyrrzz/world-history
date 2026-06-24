@@ -55,8 +55,9 @@ root.innerHTML = `
         </label>
         <div class="control-row">
           <button type="button" data-jump="-221">秦统一</button>
-          <button type="button" data-jump="220">三国</button>
-          <button type="button" data-jump="439">南北朝</button>
+          <button type="button" data-jump="700">盛唐</button>
+          <button type="button" data-jump="1000">两宋</button>
+          <button type="button" data-jump="1500">明清</button>
           <button type="button" data-fit>全览</button>
         </div>
         <div class="filter-list" aria-label="文明筛选">
@@ -94,7 +95,7 @@ root.innerHTML = `
 
   <div id="historyTooltip" class="history-tooltip" role="tooltip" hidden></div>
 
-  <footer><span>史</span><p>历史是一个大故事。<br><small>从中国出发，看见整个世界。</small></p><b>公元前300年 - 公元589年</b></footer>
+  <footer><span>史</span><p>历史是一个大故事。<br><small>从中国出发，看见整个世界。</small></p><b>公元前300年 - 公元1949年</b></footer>
 `;
 
 const timelineEl = document.querySelector('#historyTimeline');
@@ -110,7 +111,23 @@ function groupId(civ, lane = 'main') {
   return `${civ}:${lane}`;
 }
 
+// "统一" periods use the virtual `unified` lane in the data. Instead of rendering
+// them in a dedicated thin row, we expand each one across all three China region
+// lanes so unification reads as a single tall block spanning those rows.
+const CHINA_SPAN_LANE = 'unified';
+const CHINA_REGION_LANES = ['north-west', 'north-east', 'south'];
+const CHINA_LABEL_LANE = 'north-east';
+
+function isChinaSpanPeriod(period) {
+  return period.civilization === 'china' && (period.lane ?? 'main') === CHINA_SPAN_LANE;
+}
+
+function basePeriodId(itemId) {
+  return String(itemId).split('::')[0];
+}
+
 function getLaneLabel(period) {
+  if (isChinaSpanPeriod(period)) return '统一';
   const civilization = civilizations.find(civ => civ.id === period.civilization);
   const lane = civilization?.lanes.find(item => item.id === (period.lane ?? 'main'));
   return lane?.label ?? civilization?.label ?? '';
@@ -134,15 +151,33 @@ function getGroups() {
 }
 
 function getItems() {
-  return getVisiblePeriods().map(period => ({
-    id: period.id,
-    content: period.name,
-    start: yearToDate(period.start),
-    end: yearToDate(period.end),
-    group: groupId(period.civilization, period.lane ?? 'main'),
-    className: `period-item ${civilizations.find(civ => civ.id === period.civilization)?.colorClass ?? ''}`,
-    title: ''
-  }));
+  return getVisiblePeriods().flatMap(period => {
+    const colorClass = civilizations.find(civ => civ.id === period.civilization)?.colorClass ?? '';
+    if (isChinaSpanPeriod(period)) {
+      const lastIndex = CHINA_REGION_LANES.length - 1;
+      return CHINA_REGION_LANES.map((laneId, index) => {
+        const position = index === 0 ? 'top' : index === lastIndex ? 'bottom' : 'mid';
+        return {
+          id: index === 0 ? period.id : `${period.id}::${laneId}`,
+          content: laneId === CHINA_LABEL_LANE ? period.name : '',
+          start: yearToDate(period.start),
+          end: yearToDate(period.end),
+          group: groupId('china', laneId),
+          className: `period-item period-span span-${position} ${colorClass}`,
+          title: ''
+        };
+      });
+    }
+    return [{
+      id: period.id,
+      content: period.name,
+      start: yearToDate(period.start),
+      end: yearToDate(period.end),
+      group: groupId(period.civilization, period.lane ?? 'main'),
+      className: `period-item ${colorClass}`,
+      title: ''
+    }];
+  });
 }
 
 function renderYear() {
@@ -255,8 +290,8 @@ function createTimeline() {
     new DataSet(getItems()),
     new DataSet(getGroups()),
     {
-      start: yearToDate(-260),
-      end: yearToDate(620),
+      start: yearToDate(-305),
+      end: yearToDate(255),
       min: yearToDate(chartStart),
       max: yearToDate(chartEnd),
       stack: false,
@@ -269,7 +304,7 @@ function createTimeline() {
       multiselect: false,
       orientation: { axis: 'top', item: 'top' },
       groupOrder: 'order',
-      margin: { item: { horizontal: 8, vertical: 8 }, axis: 18 },
+      margin: { item: { horizontal: 8, vertical: 0 }, axis: 18 },
       tooltip: { followMouse: false, overflowMethod: 'cap' },
       template(item) {
         return `<span class="period-label">${String(item.content)}</span>`;
@@ -280,7 +315,7 @@ function createTimeline() {
   timeline.addCustomTime(yearToDate(state.year), 'current-year');
   timeline.on('itemover', event => {
     const itemId = String((event).item ?? '');
-    const period = periods.find(entry => entry.id === itemId);
+    const period = periods.find(entry => entry.id === basePeriodId(itemId));
     const point = getTimelinePointer(event);
     if (period && point) showTooltip(period, point);
   });
@@ -288,7 +323,7 @@ function createTimeline() {
   timeline.on('changed', rewriteAxisLabels);
   timeline.on('select', event => {
     const itemId = String(((event).items ?? [])[0] ?? '');
-    const period = periods.find(entry => entry.id === itemId);
+    const period = periods.find(entry => entry.id === basePeriodId(itemId));
     if (period) jumpToYear(period.start);
   });
   state.timeline = timeline;
@@ -317,7 +352,7 @@ try {
   renderYear();
   renderActivePanel();
   setTimeout(rewriteAxisLabels, 0);
-  timelineStatus.textContent = `已载入 ${getItems().length} 个时期`;
+  timelineStatus.textContent = `已载入 ${getVisiblePeriods().length} 个时期`;
 } catch (error) {
   timelineStatus.textContent = '时间轴初始化失败';
   timelineEl.innerHTML = `<pre class="runtime-error">${error instanceof Error ? error.stack : String(error)}</pre>`;

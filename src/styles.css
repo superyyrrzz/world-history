@@ -297,12 +297,16 @@ input[type="range"] {
 .history-timeline .vis-item.vis-selected {
   box-shadow: inset 0 0 0 2px white, 0 0 0 3px rgba(24,59,56,.32);
 }
+.history-timeline .vis-item .vis-item-overflow {
+  overflow: hidden;
+}
 .history-timeline .vis-item .vis-item-content {
   padding: 7px 10px;
   display: block;
   overflow: hidden;
   width: 100%;
   max-width: 100%;
+  box-sizing: border-box;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -314,6 +318,7 @@ input[type="range"] {
   white-space: nowrap;
   font-weight: 900;
   font-size: 13px;
+  text-shadow: 0 1px 1px rgba(28,20,15,.45);
 }
 .history-timeline .vis-item .vis-item-content span {
   display: block;
@@ -350,6 +355,26 @@ input[type="range"] {
 .vis-item.civ-rome { background:#d39a2e; }
 .vis-item.civ-india { background:#32766f; }
 .vis-item.civ-greece { background:#436a91; }
+
+/* 统一时期：跨越中国三条地区轨道，合并成一整块更显眼的“统一”色带 */
+.history-timeline .vis-foreground .vis-group.group-china {
+  border-color: transparent;
+}
+.history-timeline .vis-item.period-span {
+  border-radius: 0;
+  box-shadow: none;
+}
+.history-timeline .vis-item.period-span.span-top {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+.history-timeline .vis-item.period-span.span-bottom {
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+.history-timeline .vis-item.period-span.vis-selected {
+  box-shadow: none;
+}
 
 .history-tooltip {
   position: fixed;
