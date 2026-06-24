@@ -1,0 +1,15 @@
+{
+  "name": "world-history",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@floating-ui/dom": "1.7.4",
+    "vis-data": "8.0.3",
+    "vis-timeline": "8.3.1"
+  }
+}
