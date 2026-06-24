@@ -4,12 +4,16 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node server.js",
-    "start": "node server.js"
+    "dev": "node node_modules/vite/bin/vite.js --host 127.0.0.1 --base=./",
+    "build": "node node_modules/vite/bin/vite.js build --base=./ --target=esnext --minify=false",
+    "preview": "node node_modules/vite/bin/vite.js preview --host 127.0.0.1"
   },
   "dependencies": {
     "@floating-ui/dom": "1.7.4",
     "vis-data": "8.0.3",
     "vis-timeline": "8.3.1"
+  },
+  "devDependencies": {
+    "vite": "5.4.21"
   }
 }

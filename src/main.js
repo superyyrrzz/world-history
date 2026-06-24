@@ -1,3 +1,7 @@
+import 'vis-timeline/styles/vis-timeline-graph2d.min.css';
+import './styles.css';
+import { DataSet, Timeline } from 'vis-timeline/standalone';
+import { autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom';
 import {
   chartEnd,
   chartStart,
@@ -7,9 +11,6 @@ import {
   periods,
   yearToDate
 } from './data/history.js';
-
-const { DataSet, Timeline } = window.vis;
-const { autoUpdate, computePosition, flip, offset, shift } = window.FloatingUIDOM;
 
 const state = {
   year: -221,

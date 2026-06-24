@@ -14,14 +14,26 @@
 
 ## 本地运行
 
-应用现在是一个标准 Node.js 静态应用。首次运行先安装依赖：
+应用现在是一个 Vite 前端应用。首次运行先安装依赖：
 
 ```bash
 npm install
 npm run dev
 ```
 
-然后访问 `http://127.0.0.1:4173`。
+然后访问 `http://127.0.0.1:5173`。
+
+## GitHub Pages
+
+生成静态站点：
+
+```bash
+npm run build
+```
+
+构建结果在 `dist/`，可以直接部署到 GitHub Pages。项目使用相对资源路径，因此既支持自定义域名，也支持 `https://<user>.github.io/<repo>/` 这种仓库子路径。
+
+仓库已包含 `.github/workflows/deploy-pages.yml`。在 GitHub 仓库设置里把 Pages 的 Build and deployment source 设为 GitHub Actions 后，推送到 `main` 会自动构建并发布。
 
 ## 内容说明
 
