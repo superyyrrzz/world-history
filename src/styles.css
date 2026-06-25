@@ -24,7 +24,7 @@ button { color: inherit; }
 
 .topbar {
   height: 72px;
-  padding: 0 max(24px, calc((100vw - 1260px) / 2));
+  padding: 0 max(24px, calc((100vw - 1680px) / 2));
   display: flex;
   align-items: center;
   border-bottom: 1px solid var(--line);
@@ -33,6 +33,21 @@ button { color: inherit; }
   position: sticky;
   top: 0;
   z-index: 20;
+}
+.repo-link {
+  margin-left: auto;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  color: var(--ink);
+  text-decoration: none;
+  transition: background .15s ease, color .15s ease;
+}
+.repo-link:hover {
+  background: var(--ink);
+  color: var(--white);
 }
 .brand {
   color: var(--ink);
