@@ -7,6 +7,8 @@
   --blue: #496f95;
   --line: #d9cdbb;
   --white: #fffdf8;
+  --content-max: min(100% - 36px, 1680px);
+  --shell-max: min(100% - 36px, 2200px);
 }
 
 * { box-sizing: border-box; }
@@ -61,7 +63,7 @@ button { color: inherit; }
 
 main { overflow: hidden; }
 .hero {
-  max-width: 1260px;
+  max-width: var(--content-max);
   margin: auto;
   padding: 76px 24px 60px;
   display: flex;
@@ -137,7 +139,7 @@ h1 em {
 .mission strong { display: block; margin: 4px 0; }
 
 .app-shell {
-  max-width: 1260px;
+  max-width: var(--shell-max);
   margin: auto;
   padding: 20px 24px 82px;
   display: grid;
@@ -467,7 +469,7 @@ input[type="range"] {
 
 footer {
   border-top: 1px solid var(--line);
-  max-width: 1260px;
+  max-width: var(--content-max);
   margin: auto;
   padding: 35px 24px;
   display: flex;
