@@ -6,6 +6,7 @@ import {
   chartEnd,
   chartStart,
   civilizations,
+  dateToYear,
   formatYear,
   milestones,
   periods,
@@ -84,7 +85,7 @@ root.innerHTML = `
 
       <section class="timeline-workspace">
         <div class="timeline-toolbar">
-          <span>拖动空白处移动时间；按住 Ctrl/⌘ 并滚轮缩放；触控板可横向滚动。</span>
+          <span>拖动红色“当前年份”标记，或直接点击色块即可选择年份；按住 Ctrl/⌘ 滚轮缩放，触控板可横向滚动。</span>
           <strong id="timelineStatus">正在初始化时间轴...</strong>
         </div>
         <div id="historyTimeline" class="history-timeline"></div>
@@ -129,6 +130,14 @@ function isChinaSpanPeriod(period) {
 
 function basePeriodId(itemId) {
   return String(itemId).split('::')[0];
+}
+
+// A unified period is rendered as one item per China region lane. This returns
+// the ids of all sibling segments so they can be treated as a single block.
+function spanItemIds(period) {
+  return CHINA_REGION_LANES.map((laneId, index) =>
+    index === 0 ? period.id : `${period.id}::${laneId}`
+  );
 }
 
 function getLaneLabel(period) {
@@ -185,12 +194,24 @@ function getItems() {
   });
 }
 
-function renderYear() {
+function updateMarkerEdge() {
+  const range = state.timeline?.getWindow?.();
+  if (!range) return;
+  const start = range.start.getTime();
+  const end = range.end.getTime();
+  if (end <= start) return;
+  const frac = (yearToDate(state.year).getTime() - start) / (end - start);
+  timelineEl.classList.toggle('marker-flip', frac > 0.8);
+}
+
+function renderYear({ syncMarker = true } = {}) {
   yearNumber.textContent = String(Math.abs(state.year) || 1);
   eraLabel.textContent = state.year < 0 ? '公元前' : '公元';
   yearText.textContent = formatYear(state.year);
   slider.value = String(state.year);
-  state.timeline?.setCustomTime(yearToDate(state.year), 'current-year');
+  timelineEl.style.setProperty('--marker-label', JSON.stringify(formatYear(state.year)));
+  if (syncMarker) state.timeline?.setCustomTime(yearToDate(state.year), 'current-year');
+  updateMarkerEdge();
 }
 
 function renderActivePanel() {
@@ -230,11 +251,23 @@ function syncTimelineData() {
   renderActivePanel();
 }
 
+function clampYear(year) {
+  return Math.min(chartEnd, Math.max(chartStart, Math.round(year)));
+}
+
 function jumpToYear(year) {
-  state.year = Math.min(chartEnd, Math.max(chartStart, year));
+  state.year = clampYear(year);
   renderYear();
   renderActivePanel();
   state.timeline?.moveTo(yearToDate(state.year), { animation: true });
+}
+
+// Update the year directly from a timeline interaction (marker drag or click)
+// without recentering, so the view stays put under the cursor.
+function setYearFromTimeline(year, { syncMarker = true } = {}) {
+  state.year = clampYear(year);
+  renderYear({ syncMarker });
+  renderActivePanel();
 }
 
 function hideTooltip() {
@@ -325,11 +358,34 @@ function createTimeline() {
     if (period && point) showTooltip(period, point);
   });
   timeline.on('itemout', hideTooltip);
-  timeline.on('changed', rewriteAxisLabels);
+  timeline.on('changed', () => {
+    rewriteAxisLabels();
+    updateMarkerEdge();
+  });
+  timeline.on('rangechange', updateMarkerEdge);
+  timeline.on('timechange', event => {
+    if (event.id !== 'current-year') return;
+    hideTooltip();
+    setYearFromTimeline(dateToYear(event.time), { syncMarker: false });
+  });
+  timeline.on('timechanged', event => {
+    if (event.id !== 'current-year') return;
+    setYearFromTimeline(dateToYear(event.time));
+  });
+  timeline.on('click', event => {
+    if (event.time == null) return;
+    if (event.what === 'custom-time' || event.what === 'group-label') return;
+    setYearFromTimeline(dateToYear(event.time));
+  });
+  // vis-timeline selects a single item, but a unified period spans three lanes
+  // as three items. Expand the selection so the whole block highlights together.
   timeline.on('select', event => {
-    const itemId = String(((event).items ?? [])[0] ?? '');
-    const period = periods.find(entry => entry.id === basePeriodId(itemId));
-    if (period) jumpToYear(period.start);
+    const ids = event.items ?? [];
+    if (ids.length !== 1) return;
+    const period = periods.find(entry => entry.id === basePeriodId(ids[0]));
+    if (period && isChinaSpanPeriod(period)) {
+      timeline.setSelection(spanItemIds(period));
+    }
   });
   state.timeline = timeline;
 }
